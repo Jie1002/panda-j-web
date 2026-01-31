@@ -1,10 +1,10 @@
 import { Product, NailService } from './types';
 
 /**
- * 💡 实拍图显示提示：
- * 现已切换为本地路径。如果页面显示图片破碎，请检查：
- * 1. 是否存在名为 `images` 的文件夹。
- * 2. 文件夹内是否有 `floral_ring.jpg`。
+ * 💡 图片显示排查清单（当前状态：已放进 public 文件夹）：
+ * 1. 既然已经放在 public/images 下，访问路径应该是 /images/...
+ * 2. 文件名后缀：您提到现在是 .jpg.webp，路径已同步更新。
+ * 3. 区分大小写：请确保文件名在文件系统中确实是全小写。
  */
 
 export const JEWELRY_PRODUCTS: Product[] = [
@@ -17,8 +17,8 @@ export const JEWELRY_PRODUCTS: Product[] = [
     },
     price: 48,
     category: 'rings',
-    // 切换为您的实拍图路径
-    image: '/images/floral_ring.jpg', 
+    // 更新为您的实际文件名
+    image: '/images/floral_ring.jpg.webp', 
     description: {
       zh: '精致的花卉造型排戒，点缀闪耀马眼形锆石，尽显法式浪漫气质。',
       fr: 'Une bague tressée de fleurs délicates, ornée de zircons marquise pour une élégance romantique.',
