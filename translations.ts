@@ -1,0 +1,37 @@
+
+import { Locale } from './types';
+
+export const UI_TRANSLATIONS: Record<string, Record<Locale, string>> = {
+  'nav.shop': { zh: '时尚饰品', fr: 'Bijoux de Mode', en: 'Fashion Jewelry' },
+  'nav.services': { zh: '美甲预约', fr: 'Services Ongles', en: 'Nail Services' },
+  'nav.ai': { zh: 'AI 顾问', fr: 'Conseiller AI', en: 'AI Advisor' },
+  'nav.about': { zh: '关于我们', fr: 'À Propos', en: 'About' },
+  'hero.tag': { zh: '精品时尚饰品与专业美甲', fr: 'BIJOUX DE MODE & BEAUTÉ DES ONGLES', en: 'FASHION JEWELRY & NAIL BEAUTY' },
+  'hero.title1': { zh: '用指尖与饰品', fr: 'Racontez votre histoire', en: 'Tell your story' },
+  'hero.title2': { zh: '讲述你的故事', fr: 'avec Panda J', en: 'with Panda J' },
+  'hero.subtitle': { zh: '欢迎来到 Panda J 的艺术空间。发现引领潮流的饰品与专业定制美甲。', fr: 'Bienvenue dans l\'univers de Panda J. Découvrez nos bijoux tendance et nos manucures sur mesure.', en: 'Welcome to Panda J\'s universe. Discover our trendy jewelry and custom manicures.' },
+  'btn.shop': { zh: '挑选时尚饰品', fr: 'Découvrir les Bijoux', en: 'Shop Jewelry' },
+  'btn.services': { zh: '查看美甲项目', fr: 'Prendre RDV', en: 'Book Service' },
+  'section.popular': { zh: '本季热门推荐', fr: 'Sélection du Moment', en: 'Popular Selection' },
+  'section.social.title': { zh: '关注 Panda J', fr: 'Suivez Panda J', en: 'Follow Panda J' },
+  'section.social.desc': { zh: '加入我的 Facebook 社区，我们在这里分享美丽灵感。', fr: 'Rejoignez ma communauté Facebook pour plus d\'inspiration.', en: 'Join my Facebook community for more inspiration.' },
+  'btn.facebook': { zh: '访问我的 Facebook', fr: 'Visiter Facebook', en: 'Visit Facebook' },
+  'btn.messenger': { zh: 'Messenger 私信', fr: 'Contacter sur Messenger', en: 'Message on Messenger' },
+  'booking.title': { zh: '预约美甲时间', fr: 'Prendre un Rendez-vous', en: 'Book an Appointment' },
+  'booking.name': { zh: '你的尊称', fr: 'Votre Nom', en: 'Your Name' },
+  'booking.contact': { zh: 'Facebook 账号 / 联系方式', fr: 'Compte Facebook / Contact', en: 'Facebook / Contact Info' },
+  'booking.date': { zh: '日期', fr: 'Date', en: 'Date' },
+  'booking.time': { zh: '具体时间', fr: 'Heure', en: 'Time' },
+  'booking.submit': { zh: '确认发送预约申请', fr: 'Confirmer la Réservation', en: 'Confirm Booking' },
+  'ai.title': { zh: 'AI 灵感穿搭', fr: 'Style avec IA', en: 'Style with AI' },
+  'ai.desc': { zh: '告诉我你今天的着装或出席的场合。', fr: 'Dites-moi votre tenue ou l\'occasion du jour.', en: 'Tell me your outfit or the occasion.' },
+  'ai.placeholder': { zh: '例如：我要参加一场婚礼...', fr: 'Ex: Je vais à un mariage...', en: 'Ex: I am going to a wedding...' },
+  'ai.btn': { zh: '开启艺术搭配', fr: 'Obtenir des Conseils', en: 'Get Advice' },
+  'about.title': { zh: 'Panda J 的美丽哲学', fr: 'La Philosophie de Panda J', en: 'Panda J\'s Philosophy' },
+  'footer.desc': { zh: '艺术与美丽共生。', fr: 'L\'art et la beauté coexistent.', en: 'Art and beauty coexist.' },
+  'cart.title': { zh: '我的购物清单', fr: 'Ma Liste d\'Achat', en: 'My Shopping List' },
+  'cart.empty': { zh: '清单还是空的哦', fr: 'Votre liste est vide', en: 'Your list is empty' },
+  'cart.total': { zh: '总计', fr: 'Total', en: 'Total' },
+  'cart.checkout': { zh: '去 Messenger 粘贴发送', fr: 'Coller et Envoyer sur Messenger', en: 'Paste & Send on Messenger' },
+  'toast.copied': { zh: '清单已复制！请在对话框粘贴发送。', fr: 'Liste copiée ! Veuillez coller dans le chat.', en: 'List copied! Please paste in the chat.' }
+};
