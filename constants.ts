@@ -1,10 +1,10 @@
 import { Product, NailService } from './types';
 
 /**
- * 💡 使用 GitHub 托管图片的技巧：
- * 1. 在 GitHub 仓库根目录创建 `images` 文件夹。
- * 2. 上传图片（如 floral_ring.jpg）。
- * 3. 这里的 image 路径写 '/images/floral_ring.jpg' 即可。
+ * 💡 实拍图显示提示：
+ * 现已切换为本地路径。如果页面显示图片破碎，请检查：
+ * 1. 是否存在名为 `images` 的文件夹。
+ * 2. 文件夹内是否有 `floral_ring.jpg`。
  */
 
 export const JEWELRY_PRODUCTS: Product[] = [
@@ -17,7 +17,8 @@ export const JEWELRY_PRODUCTS: Product[] = [
     },
     price: 48,
     category: 'rings',
-    image: '/images/floral_ring.jpg', // 对应你上传到 GitHub 的路径
+    // 切换为您的实拍图路径
+    image: '/images/floral_ring.jpg', 
     description: {
       zh: '精致的花卉造型排戒，点缀闪耀马眼形锆石，尽显法式浪漫气质。',
       fr: 'Une bague tressée de fleurs délicates, ornée de zircons marquise pour une élégance romantique.',
@@ -54,7 +55,7 @@ export const JEWELRY_PRODUCTS: Product[] = [
     image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=600',
     description: {
       zh: '优雅的镀金工艺，镶嵌闪耀月光石色泽，展现复古气质。',
-      fr: 'Placage à l\'or élégant avec des reflets de pierre de lune pour un style vintage.',
+      fr: 'Placage à l\'or élégant with des reflets de pierre de lune pour un style vintage.',
       en: 'Elegant gold plating with moonstone flashes for a timeless vintage style.'
     },
     stock: 2
