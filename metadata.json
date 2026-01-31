@@ -1,8 +1,5 @@
-
 {
   "name": "Panda J - BEAUTÉ & BIJOUX",
   "description": "专业手工饰品与美甲预约，发现你的专属美丽。",
-  "requestFramePermissions": [
-    "camera"
-  ]
+  "requestFramePermissions": []
 }
