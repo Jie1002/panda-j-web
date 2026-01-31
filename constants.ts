@@ -2,46 +2,60 @@ import { Product, NailService } from './types';
 
 /**
  * 💡 使用 GitHub 托管图片的技巧：
- * 
- * 1. 在你的 GitHub 仓库根目录创建一个文件夹，例如命名为 `images`。
- * 2. 将你的图片（如 ring1.jpg）上传到该文件夹。
- * 3. 在下方的 image 字段中，直接填写路径：'/images/ring1.jpg'
- * 4. Vercel 会自动识别并展示这些图片。
+ * 1. 在 GitHub 仓库根目录创建 `images` 文件夹。
+ * 2. 上传图片（如 floral_ring.jpg）。
+ * 3. 这里的 image 路径写 '/images/floral_ring.jpg' 即可。
  */
 
 export const JEWELRY_PRODUCTS: Product[] = [
   {
+    id: 'j0',
+    name: { 
+      zh: '花漾璀璨排戒', 
+      fr: 'Bague Fleurie Scintillante', 
+      en: 'Floral Sparkle Band' 
+    },
+    price: 48,
+    category: 'rings',
+    image: '/images/floral_ring.jpg', // 对应你上传到 GitHub 的路径
+    description: {
+      zh: '精致的花卉造型排戒，点缀闪耀马眼形锆石，尽显法式浪漫气质。',
+      fr: 'Une bague tressée de fleurs délicates, ornée de zircons marquise pour une élégance romantique.',
+      en: 'An exquisite floral-shaped band adorned with sparkling marquise zircons, showcasing French romantic elegance.'
+    },
+    stock: 5
+  },
+  {
     id: 'j1',
     name: { 
-      zh: '我的实拍首饰 A', 
-      fr: 'Bijou Réel A', 
-      en: 'Real Jewelry A' 
+      zh: '晨露珍珠垂坠耳环', 
+      fr: 'Boucles d\'oreilles Perles de Rosée', 
+      en: 'Morning Dew Pearl Drops' 
     },
     price: 45,
     category: 'earrings',
-    // 假设你已经在 GitHub 仓库根目录上传了 images 文件夹和图片
-    image: '/images/earring1.jpg', 
+    image: 'https://images.unsplash.com/photo-1535633302704-b02f4fbc8537?auto=format&fit=crop&q=80&w=600',
     description: {
-      zh: '这是我亲自拍摄并上传到 GitHub 的首饰照片。',
-      fr: 'Ceci est une photo prise par mes soins et hébergée sur GitHub.',
-      en: 'This is a photo taken by myself and hosted on GitHub.'
+      zh: '精选淡水珍珠质感，完美修饰脸型，散发温润光泽。',
+      fr: 'Perles d\'eau douce sélectionnées, parfaites pour illuminer votre visage.',
+      en: 'Selected freshwater pearls, perfect for enhancing your natural glow.'
     },
     stock: 5
   },
   {
     id: 'j2',
     name: { 
-      zh: '我的实拍首饰 B', 
-      fr: 'Bijou Réel B', 
-      en: 'Real Jewelry B' 
+      zh: '鎏金月光石戒指', 
+      fr: 'Bague Pierre de Lune Dorée', 
+      en: 'Gilded Moonstone Ring' 
     },
     price: 38,
     category: 'rings',
-    image: '/images/ring1.jpg', 
+    image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=600',
     description: {
-      zh: '支持 JPG, PNG, WEBP 等常见格式。',
-      fr: 'Prend en charge les formats JPG, PNG, WEBP.',
-      en: 'Supports JPG, PNG, WEBP formats.'
+      zh: '优雅的镀金工艺，镶嵌闪耀月光石色泽，展现复古气质。',
+      fr: 'Placage à l\'or élégant avec des reflets de pierre de lune pour un style vintage.',
+      en: 'Elegant gold plating with moonstone flashes for a timeless vintage style.'
     },
     stock: 2
   },
@@ -56,9 +70,9 @@ export const JEWELRY_PRODUCTS: Product[] = [
     category: 'necklaces',
     image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=600',
     description: {
-      zh: '也可以继续混合使用 Unsplash 等外部链接。',
-      fr: 'Vous pouvez également continuer à utiliser des liens externes.',
-      en: 'You can also continue to use external links.'
+      zh: '极简主义设计，细巧链身点缀闪耀锆石。',
+      fr: 'Design minimaliste, chaîne délicate ornée de zircons brillants.',
+      en: 'Minimalist design, delicate chain adorned with sparkling zircons.'
     },
     stock: 8
   }
