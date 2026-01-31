@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   ShoppingBag, 
@@ -27,6 +26,9 @@ import { UI_TRANSLATIONS } from './translations';
 
 const FB_LINK = "https://www.facebook.com/jie.pan.5667";
 const MS_LINK = "https://m.me/jie.pan.5667";
+
+// 备用图片链接，防止本地图片加载失败导致页面破损
+const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1603561591411-071f4eb28381?auto=format&fit=crop&q=80&w=600";
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>('home');
@@ -58,6 +60,10 @@ const App: React.FC = () => {
   const triggerToast = () => {
     setShowToast(true);
     setTimeout(() => setShowToast(false), 3000);
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = FALLBACK_IMAGE;
   };
 
   const addToCart = (product: Product) => {
@@ -187,7 +193,12 @@ const App: React.FC = () => {
           ) : (
             cart.map((item, idx) => (
               <div key={idx} className="flex items-center gap-4 bg-pink-50/30 p-4 rounded-3xl animate-in slide-in-from-right-4">
-                <img src={item.image} className="w-20 h-20 object-cover rounded-2xl" alt={item.name[lang]} />
+                <img 
+                  src={item.image} 
+                  onError={handleImageError}
+                  className="w-20 h-20 object-cover rounded-2xl" 
+                  alt={item.name[lang]} 
+                />
                 <div className="flex-grow">
                   <h4 className="font-bold text-gray-800 text-sm">{item.name[lang]}</h4>
                   <p className="text-pink-500 font-black">$ {item.price}</p>
@@ -293,7 +304,12 @@ const App: React.FC = () => {
                 {JEWELRY_PRODUCTS.map(product => (
                   <div key={product.id} className="group">
                     <div className="relative aspect-[4/5] overflow-hidden rounded-[3rem] bg-pink-50 group-hover:shadow-soft-pink transition-all duration-700">
-                      <img src={product.image} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={product.name[lang]} />
+                      <img 
+                        src={product.image} 
+                        onError={handleImageError}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                        alt={product.name[lang]} 
+                      />
                       <button onClick={() => addToCart(product)} className="absolute bottom-6 right-6 bg-white text-pink-500 p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all"><ShoppingBag size={24} /></button>
                     </div>
                     <div className="mt-6 text-center"><h4 className="font-bold text-gray-800 text-lg">{product.name[lang]}</h4><p className="text-pink-500 font-black text-xl">${product.price}</p></div>
@@ -311,7 +327,12 @@ const App: React.FC = () => {
               {JEWELRY_PRODUCTS.map(product => (
                 <div key={product.id} className="bg-white rounded-[3rem] overflow-hidden shadow-sm hover:shadow-soft-pink transition-all border border-pink-50 group">
                   <div className="overflow-hidden aspect-square">
-                    <img src={product.image} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={product.name[lang]} />
+                    <img 
+                      src={product.image} 
+                      onError={handleImageError}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                      alt={product.name[lang]} 
+                    />
                   </div>
                   <div className="p-10 text-center">
                     <h4 className="text-xl font-bold text-gray-900 mb-2">{product.name[lang]}</h4>
@@ -333,7 +354,12 @@ const App: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
               {NAIL_SERVICES.map(service => (
                 <div key={service.id} className="group relative rounded-[3.5rem] bg-white shadow-2xl overflow-hidden aspect-[4/5.5]">
-                  <img src={service.image} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt={service.name[lang]} />
+                  <img 
+                    src={service.image} 
+                    onError={handleImageError}
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                    alt={service.name[lang]} 
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-10 text-white">
                     <span className="bg-amber-400 text-[10px] px-4 py-1.5 rounded-full font-black uppercase mb-4 inline-block">{service.duration[lang]}</span>
