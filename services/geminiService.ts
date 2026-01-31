@@ -1,11 +1,11 @@
-
 import { GoogleGenAI } from "@google/genai";
 import { Locale } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
-
 export async function getStyleAdvice(prompt: string, products: any[], services: any[], lang: Locale) {
   const model = "gemini-3-flash-preview";
+  
+  // Initialize inside function to ensure environment variables are fresh
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
   
   const langNames = { zh: '中文', fr: 'French', en: 'English' };
 
