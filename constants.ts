@@ -1,40 +1,66 @@
-
 import { Product, NailService } from './types';
+
+/**
+ * 💡 使用 GitHub 托管图片的技巧：
+ * 
+ * 1. 在你的 GitHub 仓库根目录创建一个文件夹，例如命名为 `images`。
+ * 2. 将你的图片（如 ring1.jpg）上传到该文件夹。
+ * 3. 在下方的 image 字段中，直接填写路径：'/images/ring1.jpg'
+ * 4. Vercel 会自动识别并展示这些图片。
+ */
 
 export const JEWELRY_PRODUCTS: Product[] = [
   {
     id: 'j1',
     name: { 
-      zh: '晨露珍珠垂坠耳环', 
-      fr: 'Boucles d\'oreilles Perles de Rosée', 
-      en: 'Morning Dew Pearl Drops' 
+      zh: '我的实拍首饰 A', 
+      fr: 'Bijou Réel A', 
+      en: 'Real Jewelry A' 
     },
     price: 45,
     category: 'earrings',
-    image: 'https://images.unsplash.com/photo-1535633302704-b02f4fbc8537?auto=format&fit=crop&q=80&w=600',
+    // 假设你已经在 GitHub 仓库根目录上传了 images 文件夹和图片
+    image: '/images/earring1.jpg', 
     description: {
-      zh: '精致的时尚设计，精选淡水珍珠质感，完美修饰脸型。',
-      fr: 'Design sophistiqué avec texture de perles d\'eau douce, parfait pour sublimer votre visage.',
-      en: 'Sophisticated fashion design with freshwater pearl texture, perfect for enhancing your face shape.'
+      zh: '这是我亲自拍摄并上传到 GitHub 的首饰照片。',
+      fr: 'Ceci est une photo prise par mes soins et hébergée sur GitHub.',
+      en: 'This is a photo taken by myself and hosted on GitHub.'
     },
     stock: 5
   },
   {
     id: 'j2',
     name: { 
-      zh: '鎏金月光石戒指', 
-      fr: 'Bague Pierre de Lune Dorée', 
-      en: 'Gilded Moonstone Ring' 
+      zh: '我的实拍首饰 B', 
+      fr: 'Bijou Réel B', 
+      en: 'Real Jewelry B' 
     },
     price: 38,
     category: 'rings',
-    image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=600',
+    image: '/images/ring1.jpg', 
     description: {
-      zh: '优雅的镀金工艺，镶嵌闪耀月光石色泽，展现复古气质。',
-      fr: 'Placage à l\'or élégant serti d\'éclats de pierre de lune pour un style vintage affirmé.',
-      en: 'Elegant gold plating set with moonstone flashes for a bold vintage style.'
+      zh: '支持 JPG, PNG, WEBP 等常见格式。',
+      fr: 'Prend en charge les formats JPG, PNG, WEBP.',
+      en: 'Supports JPG, PNG, WEBP formats.'
     },
     stock: 2
+  },
+  {
+    id: 'j3',
+    name: { 
+      zh: '星河璀璨锁骨链', 
+      fr: 'Collier Galaxie Scintillante', 
+      en: 'Shimmering Galaxy Necklace' 
+    },
+    price: 52,
+    category: 'necklaces',
+    image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=600',
+    description: {
+      zh: '也可以继续混合使用 Unsplash 等外部链接。',
+      fr: 'Vous pouvez également continuer à utiliser des liens externes.',
+      en: 'You can also continue to use external links.'
+    },
+    stock: 8
   }
 ];
 
