@@ -83,11 +83,10 @@ const App: React.FC = () => {
       await navigator.clipboard.writeText(message);
       triggerToast();
       
-      // 延迟清空和跳转，让用户先看到成功的 Toast
       setTimeout(() => {
         window.open(MS_LINK, '_blank');
-        setCart([]); // 清空购物车
-        setIsCartOpen(false); // 关闭侧边栏
+        setCart([]); 
+        setIsCartOpen(false); 
       }, 1000);
     } catch (err) {
       window.open(`${MS_LINK}?text=${encodeURIComponent(message)}`, '_blank');
@@ -218,7 +217,6 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col relative overflow-x-hidden">
-      {/* Toast Notification */}
       <div className={`fixed top-24 left-1/2 -translate-x-1/2 z-[200] transition-all duration-500 ${showToast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8 pointer-events-none'}`}>
         <div className="bg-gray-900 text-white px-8 py-4 rounded-2xl shadow-2xl flex items-center gap-3 border border-gray-700">
           <Check className="text-green-400" size={20} />
@@ -228,15 +226,14 @@ const App: React.FC = () => {
 
       <CartModal />
       
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-xl border-b border-pink-50">
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-2xl border-b border-pink-50 shadow-sm transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 md:h-24">
             <div className="flex-shrink-0 flex flex-col cursor-pointer" onClick={() => setCurrentView('home')}>
               <h1 className="text-3xl md:text-4xl font-logo text-gray-800 leading-none">Panda J</h1>
               <span className="text-[10px] md:text-xs font-bold tracking-[0.3em] text-amber-500 uppercase">BEAUTÉ & BIJOUX</span>
             </div>
-            <div className="hidden lg:flex bg-pink-50/50 p-1 rounded-full border border-pink-100 space-x-1">
+            <div className="hidden lg:flex bg-pink-50/30 p-1 rounded-full border border-pink-100/50 space-x-1">
               <NavItem view="shop" labelKey="nav.shop" />
               <NavItem view="services" labelKey="nav.services" />
               <NavItem view="ai-advisor" labelKey="nav.ai" />
@@ -256,7 +253,7 @@ const App: React.FC = () => {
           </div>
         </div>
         {isMenuOpen && (
-          <div className="lg:hidden bg-white border-b border-pink-100 flex flex-col py-6 px-6 space-y-4 shadow-2xl">
+          <div className="lg:hidden bg-white/95 backdrop-blur-xl border-b border-pink-100 flex flex-col py-6 px-6 space-y-4 shadow-2xl animate-in slide-in-from-top duration-300">
              <div className="flex justify-center border-b border-pink-50 pb-4"><LanguageSwitcher /></div>
             <NavItem view="shop" labelKey="nav.shop" />
             <NavItem view="services" labelKey="nav.services" />
@@ -266,7 +263,6 @@ const App: React.FC = () => {
         )}
       </nav>
 
-      {/* Floating Messenger Button */}
       <button 
         onClick={() => window.open(MS_LINK, '_blank')}
         className="fixed bottom-6 left-6 z-50 bg-[#0084FF] text-white p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all flex items-center justify-center group"
@@ -279,7 +275,7 @@ const App: React.FC = () => {
           <div className="space-y-20 pb-20">
             <section className="relative px-4 pt-8 md:pt-12">
               <div className="max-w-7xl mx-auto rounded-[3.5rem] overflow-hidden relative h-[80vh] flex items-center bg-pink-watercolor shadow-soft-pink">
-                <div className="relative z-10 px-8 md:px-20 space-y-8 max-w-3xl">
+                <div className="relative z-10 px-8 md:px-20 space-y-8 max-w-3xl animate-in fade-in slide-in-from-left duration-700">
                   <div className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-md px-5 py-2 rounded-full text-pink-600 text-[10px] md:text-xs font-bold tracking-widest uppercase border border-white/50"><Sparkles size={16} className="text-amber-400" /> {t('hero.tag')}</div>
                   <h2 className="text-5xl md:text-8xl font-logo text-gray-900 leading-[0.9]">{t('hero.title1')}<br/><span className="text-pink-500">{t('hero.title2')}</span></h2>
                   <p className="text-gray-600 text-lg md:text-2xl font-medium max-w-xl">{t('hero.subtitle')}</p>
@@ -297,7 +293,7 @@ const App: React.FC = () => {
                 {JEWELRY_PRODUCTS.map(product => (
                   <div key={product.id} className="group">
                     <div className="relative aspect-[4/5] overflow-hidden rounded-[3rem] bg-pink-50 group-hover:shadow-soft-pink transition-all duration-700">
-                      <img src={product.image} className="w-full h-full object-cover" alt={product.name[lang]} />
+                      <img src={product.image} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={product.name[lang]} />
                       <button onClick={() => addToCart(product)} className="absolute bottom-6 right-6 bg-white text-pink-500 p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all"><ShoppingBag size={24} /></button>
                     </div>
                     <div className="mt-6 text-center"><h4 className="font-bold text-gray-800 text-lg">{product.name[lang]}</h4><p className="text-pink-500 font-black text-xl">${product.price}</p></div>
@@ -309,15 +305,17 @@ const App: React.FC = () => {
         )}
 
         {currentView === 'shop' && (
-          <div className="max-w-7xl mx-auto px-4 py-16">
+          <div className="max-w-7xl mx-auto px-4 py-16 animate-in fade-in duration-500">
             <h2 className="text-5xl font-logo text-gray-900 text-center mb-16">{t('nav.shop')}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
               {JEWELRY_PRODUCTS.map(product => (
-                <div key={product.id} className="bg-white rounded-[3rem] overflow-hidden shadow-sm hover:shadow-soft-pink transition-all border border-pink-50">
-                  <img src={product.image} className="aspect-square object-cover" alt={product.name[lang]} />
+                <div key={product.id} className="bg-white rounded-[3rem] overflow-hidden shadow-sm hover:shadow-soft-pink transition-all border border-pink-50 group">
+                  <div className="overflow-hidden aspect-square">
+                    <img src={product.image} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={product.name[lang]} />
+                  </div>
                   <div className="p-10 text-center">
                     <h4 className="text-xl font-bold text-gray-900 mb-2">{product.name[lang]}</h4>
-                    <p className="text-gray-400 text-sm mb-8 leading-relaxed">{product.description[lang]}</p>
+                    <p className="text-gray-400 text-sm mb-8 leading-relaxed h-12 overflow-hidden">{product.description[lang]}</p>
                     <div className="flex items-center justify-between pt-6 border-t border-pink-50">
                       <span className="text-2xl font-black text-pink-500">${product.price}</span>
                       <button onClick={() => addToCart(product)} className="bg-gray-900 text-white p-4 rounded-2xl hover:bg-pink-500 transition-all"><ShoppingBag size={20} /></button>
@@ -330,7 +328,7 @@ const App: React.FC = () => {
         )}
 
         {currentView === 'services' && (
-          <div className="max-w-7xl mx-auto px-4 py-16">
+          <div className="max-w-7xl mx-auto px-4 py-16 animate-in fade-in duration-500">
             <h2 className="text-5xl font-logo text-gray-900 text-center mb-20">{t('nav.services')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
               {NAIL_SERVICES.map(service => (
@@ -353,46 +351,75 @@ const App: React.FC = () => {
         )}
 
         {currentView === 'booking' && (
-          <div className="max-w-2xl mx-auto px-4 py-16">
+          <div className="max-w-2xl mx-auto px-4 py-16 animate-in zoom-in-95 duration-500">
             <div className="bg-white rounded-[4rem] shadow-2xl p-10 md:p-16 border border-pink-50">
               <h2 className="text-4xl font-logo text-gray-900 mb-12">{t('booking.title')}</h2>
               <form onSubmit={handleBookingSubmit} className="space-y-8">
-                <input type="text" placeholder={t('booking.name')} required className="w-full px-8 py-5 rounded-3xl bg-pink-50/50 outline-none font-bold" onChange={(e) => setBooking({...booking, customerName: e.target.value})} />
-                <input type="text" placeholder={t('booking.contact')} required className="w-full px-8 py-5 rounded-3xl bg-pink-50/50 outline-none font-bold" onChange={(e) => setBooking({...booking, customerContact: e.target.value})} />
+                <input type="text" placeholder={t('booking.name')} required className="w-full px-8 py-5 rounded-3xl bg-pink-50/50 outline-none font-bold focus:ring-2 focus:ring-pink-200 transition-all" onChange={(e) => setBooking({...booking, customerName: e.target.value})} />
+                <input type="text" placeholder={t('booking.contact')} required className="w-full px-8 py-5 rounded-3xl bg-pink-50/50 outline-none font-bold focus:ring-2 focus:ring-pink-200 transition-all" onChange={(e) => setBooking({...booking, customerContact: e.target.value})} />
                 <div className="grid grid-cols-2 gap-6">
-                  <input type="date" required className="px-6 py-5 rounded-3xl bg-pink-50/50 outline-none font-bold" onChange={(e) => setBooking({...booking, date: e.target.value})} />
-                  <input type="time" required className="px-6 py-5 rounded-3xl bg-pink-50/50 outline-none font-bold" onChange={(e) => setBooking({...booking, time: e.target.value})} />
+                  <input type="date" required className="px-6 py-5 rounded-3xl bg-pink-50/50 outline-none font-bold focus:ring-2 focus:ring-pink-200 transition-all" onChange={(e) => setBooking({...booking, date: e.target.value})} />
+                  <input type="time" required className="px-6 py-5 rounded-3xl bg-pink-50/50 outline-none font-bold focus:ring-2 focus:ring-pink-200 transition-all" onChange={(e) => setBooking({...booking, time: e.target.value})} />
                 </div>
-                <button type="submit" className="w-full bg-pink-500 text-white py-6 rounded-[2.5rem] font-black text-xl shadow-xl flex items-center justify-center gap-3">{t('booking.submit')} <ExternalLink size={20} /></button>
+                <button type="submit" className="w-full bg-pink-500 text-white py-6 rounded-[2.5rem] font-black text-xl shadow-xl flex items-center justify-center gap-3 hover:bg-pink-600 transition-all">{t('booking.submit')} <ExternalLink size={20} /></button>
               </form>
             </div>
           </div>
         )}
 
         {currentView === 'ai-advisor' && (
-          <div className="max-w-4xl mx-auto px-4 py-16">
+          <div className="max-w-4xl mx-auto px-4 py-16 animate-in fade-in duration-500">
             <div className="text-center mb-16 space-y-6"><h2 className="text-5xl font-logo text-gray-900">{t('ai.title')}</h2><p className="text-gray-400 font-medium">{t('ai.desc')}</p></div>
             <div className="bg-white rounded-[4rem] shadow-2xl p-10 md:p-16 border border-pink-50">
-              <textarea value={aiPrompt} onChange={(e) => setAiPrompt(e.target.value)} placeholder={t('ai.placeholder')} className="w-full p-10 rounded-[3rem] bg-pink-50/30 border-2 border-pink-100 outline-none text-xl min-h-[220px] font-medium" />
-              <button onClick={askAi} disabled={isAiLoading || !aiPrompt.trim()} className="w-full mt-10 bg-gray-900 text-white py-6 rounded-[2.5rem] font-black text-xl shadow-2xl">{isAiLoading ? '...' : t('ai.btn')}</button>
-              {aiResponse && <div className="mt-16 bg-pink-50/50 p-12 rounded-[3.5rem] border-2 border-pink-100 italic text-lg leading-relaxed text-gray-700 whitespace-pre-wrap font-medium">{aiResponse}</div>}
+              <textarea 
+                value={aiPrompt} 
+                onChange={(e) => setAiPrompt(e.target.value)} 
+                placeholder={t('ai.placeholder')} 
+                className="w-full p-10 rounded-[3rem] bg-pink-50/30 border-2 border-pink-100 outline-none text-xl min-h-[220px] font-medium focus:bg-white transition-all" 
+              />
+              <button 
+                onClick={askAi} 
+                disabled={isAiLoading || !aiPrompt.trim()} 
+                className="w-full mt-10 bg-gray-900 text-white py-6 rounded-[2.5rem] font-black text-xl shadow-2xl disabled:opacity-50 hover:bg-pink-500 transition-all"
+              >
+                {isAiLoading ? 'AI Consultant...' : t('ai.btn')}
+              </button>
+              {aiResponse && (
+                <div className="mt-16 bg-pink-50/50 p-12 rounded-[3.5rem] border-2 border-pink-100 italic text-lg leading-relaxed text-gray-700 whitespace-pre-wrap font-medium animate-in slide-in-from-bottom-4 duration-500 prose max-w-none">
+                  {aiResponse}
+                </div>
+              )}
             </div>
           </div>
         )}
 
         {currentView === 'about' && (
-          <div className="max-w-7xl mx-auto px-4 py-24 flex flex-col md:flex-row gap-20 items-center">
-            <div className="md:w-1/2 relative"><div className="rounded-[4rem] overflow-hidden shadow-2xl border-8 border-white aspect-square"><img src="https://images.unsplash.com/photo-1590673801239-13587b4333ce?auto=format&fit=crop&q=80&w=800" className="w-full h-full object-cover" alt="About" /></div></div>
-            <div className="md:w-1/2 space-y-10">
+          <div className="max-w-7xl mx-auto px-4 py-12 md:py-24 flex flex-col md:flex-row gap-12 md:gap-20 items-center animate-in fade-in duration-500">
+            <div className="w-full md:w-1/2 relative">
+              <div className="rounded-[4rem] overflow-hidden shadow-2xl border-8 border-white aspect-square">
+                <img src="https://images.unsplash.com/photo-1590673801239-13587b4333ce?auto=format&fit=crop&q=80&w=800" className="w-full h-full object-cover" alt="About" />
+              </div>
+            </div>
+            <div className="w-full md:w-1/2 space-y-10">
                <h2 className="text-6xl font-logo text-gray-900">{t('about.title')}</h2>
-               <div className="text-gray-500 text-xl font-medium leading-relaxed space-y-4"><p>{lang === 'zh' ? '自 2021 年起，我们致力于为您带来极致的美丽体验。' : lang === 'fr' ? 'Depuis 2021, nous nous engageons à vous offrir l\'expérience beauté ultime.' : 'Since 2021, we have been committed to bringing you the ultimate beauty experience.'}</p></div>
-               <div className="flex gap-6"><a href={FB_LINK} className="bg-[#1877F2] text-white p-5 rounded-3xl shadow-lg"><Facebook size={28} /></a><a href={MS_LINK} className="bg-[#0084FF] text-white p-5 rounded-3xl shadow-lg"><MessageCircle size={28} /></a></div>
+               <div className="text-gray-500 text-xl font-medium leading-relaxed space-y-6">
+                 <p>{lang === 'zh' ? '自 2021 年起，Panda J 致力于为您带来极致的美丽体验。' : lang === 'fr' ? 'Depuis 2021, Panda J s\'engage à vous offrir l\'expérience beauté ultime.' : 'Since 2021, Panda J has been committed to bringing you the ultimate beauty experience.'}</p>
+                 <p className="text-lg opacity-80 italic">{lang === 'zh' ? '我们相信，每一件饰品和每一款美甲都是自我表达的艺术。' : lang === 'fr' ? 'Nous croyons que chaque bijou et chaque manucure est une forme d\'art.' : 'We believe that every piece of jewelry and every manicure is a form of art.'}</p>
+               </div>
+               <div className="flex gap-6">
+                 <a href={FB_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#1877F2] text-white p-5 rounded-3xl shadow-lg hover:scale-110 transition-transform"><Facebook size={28} /></a>
+                 <a href={MS_LINK} target="_blank" rel="noopener noreferrer" className="bg-[#0084FF] text-white p-5 rounded-3xl shadow-lg hover:scale-110 transition-transform"><MessageCircle size={28} /></a>
+               </div>
             </div>
           </div>
         )}
       </main>
 
-      <footer className="bg-white border-t border-pink-50 py-24 mt-20 text-center"><h1 className="text-3xl font-logo text-gray-800 leading-none">Panda J</h1><p className="text-gray-400 mt-4">{t('footer.desc')}</p><div className="mt-12 text-[9px] font-black text-gray-300 uppercase tracking-widest">© 2024 PANDA J - BEAUTÉ & BIJOUX. ALL LANGUAGES CONNECTED.</div></footer>
+      <footer className="bg-white border-t border-pink-50 py-24 mt-20 text-center">
+        <h1 className="text-3xl font-logo text-gray-800 leading-none">Panda J</h1>
+        <p className="text-gray-400 mt-4 px-4">{t('footer.desc')}</p>
+        <div className="mt-12 text-[9px] font-black text-gray-300 uppercase tracking-widest">© 2024 PANDA J - BEAUTÉ & BIJOUX. ALL LANGUAGES CONNECTED.</div>
+      </footer>
     </div>
   );
 };
