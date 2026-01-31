@@ -1,4 +1,3 @@
-
 import { Locale } from './types';
 
 export const UI_TRANSLATIONS: Record<string, Record<Locale, string>> = {
