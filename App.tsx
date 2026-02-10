@@ -10,6 +10,7 @@ import {
   Instagram, 
   Facebook,
   MessageCircle,
+  ArrowLeft,
   ArrowRight,
   Star,
   Music,
@@ -17,7 +18,8 @@ import {
   Check,
   Trash2,
   ExternalLink,
-  Copy
+  Copy,
+  Plus
 } from 'lucide-react';
 import { View, Product, NailService, BookingState, Locale } from './types';
 import { JEWELRY_PRODUCTS, NAIL_SERVICES } from './constants';
@@ -27,12 +29,13 @@ import { UI_TRANSLATIONS } from './translations';
 const FB_LINK = "https://www.facebook.com/jie.pan.5667";
 const MS_LINK = "https://m.me/jie.pan.5667";
 
-// 使用 Base64 作为最终兜底图，确保绝对不会触发二次加载错误导致死循环
 const SAFE_PLACEHOLDER = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNmZmVmZjIiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIxMCIgZmlsbD0iI2Y0NzJiYSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5QYW5kYSBKPC90ZXh0Pjwvc3ZnPg==";
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1603561591411-071f4eb28381?auto=format&fit=crop&q=80&w=600";
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>('home');
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [lang, setLang] = useState<Locale>('fr');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
@@ -65,18 +68,22 @@ const App: React.FC = () => {
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.currentTarget;
-    // 如果已经是兜底图了还报错，说明网络环境极差或 URL 有误，此时直接停止加载尝试
     if (target.src === SAFE_PLACEHOLDER) {
-      target.onerror = null; // 彻底断开错误监听
+      target.onerror = null; 
       return;
     }
-    // 如果当前不是 Unsplash 且不是 SafePlaceholder，尝试切换到 Unsplash
     if (target.src !== FALLBACK_IMAGE) {
       target.src = FALLBACK_IMAGE;
     } else {
-      // 如果 Unsplash 也挂了，切换到 Base64 安全图
       target.src = SAFE_PLACEHOLDER;
     }
+  };
+
+  const openProductDetail = (product: Product) => {
+    setSelectedProduct(product);
+    setActiveImageIndex(0);
+    setCurrentView('product-detail');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const addToCart = (product: Product) => {
@@ -179,7 +186,10 @@ const App: React.FC = () => {
   );
 
   const ProductCard: React.FC<{ product: Product; isGrid?: boolean }> = ({ product, isGrid }) => (
-    <div className={`group ${isGrid ? 'bg-white rounded-[3rem] overflow-hidden shadow-sm hover:shadow-soft-pink transition-all border border-pink-50' : ''}`}>
+    <div 
+      onClick={() => openProductDetail(product)}
+      className={`group cursor-pointer ${isGrid ? 'bg-white rounded-[3rem] overflow-hidden shadow-sm hover:shadow-soft-pink transition-all border border-pink-50' : ''}`}
+    >
       <div className={`relative overflow-hidden ${isGrid ? 'aspect-square' : 'aspect-[4/5] rounded-[3rem] bg-pink-50 group-hover:shadow-soft-pink transition-all duration-700'}`}>
         <img 
           src={product.image} 
@@ -190,11 +200,20 @@ const App: React.FC = () => {
         <div className="absolute inset-0 jewelry-overlay pointer-events-none" />
         <div className="absolute inset-0 border-[8px] border-white/10 rounded-[inherit] pointer-events-none group-hover:border-white/20 transition-all duration-700" />
         
+        {/* 悬停时的视觉引导 */}
+        <div className="absolute inset-0 flex items-center justify-center bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+           <span className="bg-white/90 backdrop-blur-md px-6 py-3 rounded-full text-[10px] font-black uppercase tracking-widest text-pink-500 shadow-xl">{t('btn.details') || 'Voir Détails'}</span>
+        </div>
+
+        {/* 核心改动：重新加入快速加购按钮，并阻止事件冒泡 */}
         <button 
-          onClick={() => addToCart(product)} 
-          className={`absolute bottom-6 right-6 bg-white text-pink-500 p-4 rounded-2xl shadow-2xl transition-all ${isGrid ? '' : 'opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0'}`}
+          onClick={(e) => {
+            e.stopPropagation(); // 阻止触发卡片的 openProductDetail
+            addToCart(product);
+          }} 
+          className="absolute bottom-6 right-6 bg-white text-pink-500 p-4 rounded-2xl shadow-2xl transition-all hover:scale-110 active:scale-95 group/btn"
         >
-          <ShoppingBag size={isGrid ? 20 : 24} />
+          <ShoppingBag size={22} className="group-hover/btn:animate-pulse" />
         </button>
       </div>
       
@@ -208,6 +227,81 @@ const App: React.FC = () => {
       </div>
     </div>
   );
+
+  const ProductDetailView: React.FC<{ product: Product }> = ({ product }) => {
+    const allImages = product.images && product.images.length > 0 ? product.images : [product.image];
+    
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-8 md:py-16 animate-in fade-in slide-in-from-bottom-8 duration-700">
+        <button 
+          onClick={() => setCurrentView('shop')}
+          className="mb-8 flex items-center gap-2 text-gray-400 hover:text-pink-500 transition-colors font-bold group"
+        >
+          <div className="p-2 rounded-full border border-gray-100 group-hover:border-pink-200 group-hover:bg-pink-50"><ArrowLeft size={18} /></div>
+          {t('btn.back') || 'Retour à la boutique'}
+        </button>
+
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+          {/* Gallery Section */}
+          <div className="w-full lg:w-3/5 space-y-6">
+            <div className="relative aspect-square rounded-[4rem] overflow-hidden bg-white shadow-2xl border border-pink-50">
+              <img 
+                src={allImages[activeImageIndex]} 
+                onError={handleImageError}
+                className="w-full h-full object-cover jewelry-img-warmth" 
+                alt={product.name[lang]} 
+              />
+              <div className="absolute inset-0 jewelry-overlay pointer-events-none" />
+            </div>
+            {allImages.length > 1 && (
+              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+                {allImages.map((img, idx) => (
+                  <button 
+                    key={idx}
+                    onClick={() => setActiveImageIndex(idx)}
+                    className={`relative w-24 h-24 flex-shrink-0 rounded-2xl overflow-hidden border-2 transition-all ${activeImageIndex === idx ? 'border-pink-400 scale-105 shadow-lg' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                  >
+                    <img src={img} onError={handleImageError} className="w-full h-full object-cover jewelry-img-warmth" alt="" />
+                    <div className="absolute inset-0 jewelry-overlay" />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Info Section */}
+          <div className="w-full lg:w-2/5 flex flex-col justify-center space-y-10">
+            <div className="space-y-4">
+              <span className="text-amber-500 text-xs font-black uppercase tracking-[0.3em]">{product.category}</span>
+              <h2 className="text-5xl font-logo text-gray-900 leading-tight">{product.name[lang]}</h2>
+              <div className="flex items-center gap-4">
+                <p className="text-4xl font-black text-pink-500">${product.price}</p>
+                <div className="h-4 w-px bg-pink-100 mx-2"></div>
+                <div className="flex gap-1">
+                  {[1,2,3,4,5].map(i => <Star key={i} size={14} className="fill-amber-400 text-amber-400" />)}
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <h3 className="text-sm font-black uppercase tracking-widest text-gray-900 border-b border-pink-50 pb-2">{t('details.description') || 'À propos de cette pièce'}</h3>
+              <p className="text-gray-500 text-lg leading-relaxed font-medium">{product.description[lang]}</p>
+            </div>
+
+            <div className="pt-10 space-y-6">
+              <button 
+                onClick={() => addToCart(product)}
+                className="w-full bg-gray-900 text-white py-6 rounded-[2.5rem] font-black text-xl flex items-center justify-center gap-4 hover:bg-pink-500 transition-all shadow-2xl active:scale-95 group"
+              >
+                <ShoppingBag className="group-hover:animate-bounce" /> {t('btn.add_to_cart') || 'Ajouter à la liste'}
+              </button>
+              <p className="text-center text-xs text-gray-300 font-bold uppercase tracking-widest italic">{t('details.messenger_note') || 'Paiement et livraison via Messenger'}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen flex flex-col relative overflow-x-hidden">
@@ -336,6 +430,10 @@ const App: React.FC = () => {
               ))}
             </div>
           </div>
+        )}
+
+        {currentView === 'product-detail' && selectedProduct && (
+          <ProductDetailView product={selectedProduct} />
         )}
 
         {currentView === 'services' && (
