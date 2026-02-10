@@ -1,10 +1,10 @@
 import { Product, NailService } from './types';
 
 /**
- * 💡 图片显示排查清单：
- * 1. 确认已将新图片放入 public/images 文件夹。
- * 2. 确认文件名已修改为：earrings_1.jpg.webp 和 earrings_2.jpg.webp。
- * 3. 访问路径应为 /images/文件名。
+ * 💡 图片路径说明：
+ * 如果您的图片放在 public/images/ 目录下，
+ * 且服务器将 public 视为根目录，则路径为 /images/...
+ * 如果图片不显示，请尝试修改为 /public/images/...
  */
 
 export const JEWELRY_PRODUCTS: Product[] = [
@@ -75,23 +75,6 @@ export const JEWELRY_PRODUCTS: Product[] = [
       en: 'Selected freshwater pearls, perfect for enhancing your natural glow.'
     },
     stock: 5
-  },
-  {
-    id: 'j3',
-    name: { 
-      zh: '星河璀璨锁骨链', 
-      fr: 'Collier Galaxie Scintillante', 
-      en: 'Shimmering Galaxy Necklace' 
-    },
-    price: 52,
-    category: 'necklaces',
-    image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=600',
-    description: {
-      zh: '极简主义设计，细巧链身点缀闪耀锆石。',
-      fr: 'Design minimaliste, chaîne délicate ornée de zircons brillants.',
-      en: 'Minimalist design, delicate chain adorned with sparkling zircons.'
-    },
-    stock: 8
   }
 ];
 
