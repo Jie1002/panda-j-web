@@ -27,7 +27,6 @@ import { UI_TRANSLATIONS } from './translations';
 const FB_LINK = "https://www.facebook.com/jie.pan.5667";
 const MS_LINK = "https://m.me/jie.pan.5667";
 
-// 备用图片链接，防止本地图片加载失败导致页面破损
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1603561591411-071f4eb28381?auto=format&fit=crop&q=80&w=600";
 
 const App: React.FC = () => {
@@ -81,14 +80,11 @@ const App: React.FC = () => {
 
   const checkoutViaMessenger = async () => {
     if (cart.length === 0) return;
-    
     const items = cart.map(p => `- ${p.name[lang]} ($${p.price})`).join('\n');
     const message = `Bonjour Panda J! J'aimerais commander:\n${items}\nTotal: $${calculateTotal()}\nMerci!`;
-    
     try {
       await navigator.clipboard.writeText(message);
       triggerToast();
-      
       setTimeout(() => {
         window.open(MS_LINK, '_blank');
         setCart([]); 
@@ -105,7 +101,6 @@ const App: React.FC = () => {
     e.preventDefault();
     const serviceName = NAIL_SERVICES.find(s => s.id === booking.serviceId)?.name[lang] || "";
     const message = `Bonjour Panda J! Je souhaite réserver un rendez-vous:\nService: ${serviceName}\nDate: ${booking.date}\nHeure: ${booking.time}\nNom: ${booking.customerName}\nContact: ${booking.customerContact}`;
-    
     try {
       await navigator.clipboard.writeText(message);
       triggerToast();
@@ -141,87 +136,63 @@ const App: React.FC = () => {
     </button>
   );
 
-  const LanguageSwitcher = () => {
-    const languages: { code: Locale; label: string }[] = [
-      { code: 'fr', label: 'FR - Français' },
-      { code: 'en', label: 'EN - English' },
-      { code: 'zh', label: 'ZH - 中文' }
-    ];
-    return (
-      <div className="relative" ref={langDropdownRef}>
-        <button
-          onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
-          className="flex items-center gap-2 bg-pink-50 px-4 py-2 rounded-full border border-pink-100 shadow-sm hover:bg-pink-100 transition-colors"
-        >
-          <span className="text-[10px] font-black text-pink-500 uppercase">{lang.toUpperCase()}</span>
-          <ChevronDown size={14} className={`text-pink-300 transition-transform ${isLangDropdownOpen ? 'rotate-180' : ''}`} />
-        </button>
-        {isLangDropdownOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-white border border-pink-50 rounded-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 z-[100]">
-            {languages.map((l) => (
-              <button
-                key={l.code}
-                onClick={() => { setLang(l.code); setIsLangDropdownOpen(false); }}
-                className={`w-full flex items-center justify-between px-5 py-3 text-sm font-bold transition-colors ${
-                  lang === l.code ? 'bg-pink-50 text-pink-600' : 'text-gray-500 hover:bg-pink-50/50'
-                }`}
-              >
-                {l.label}
-                {lang === l.code && <Check size={14} />}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  const CartModal = () => (
-    <div className={`fixed inset-0 z-[100] flex justify-end transition-opacity duration-300 ${isCartOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-      <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" onClick={() => setIsCartOpen(false)} />
-      <div className={`relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col transition-transform duration-500 ${isCartOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="p-8 border-b border-pink-50 flex items-center justify-between">
-          <h3 className="text-2xl font-logo text-gray-900">{t('cart.title')}</h3>
-          <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-pink-50 rounded-full transition-colors"><X size={24} /></button>
-        </div>
-        <div className="flex-grow overflow-y-auto p-8 space-y-6">
-          {cart.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-gray-400 space-y-4">
-              <ShoppingBag size={48} className="opacity-20" />
-              <p className="font-bold">{t('cart.empty')}</p>
-            </div>
-          ) : (
-            cart.map((item, idx) => (
-              <div key={idx} className="flex items-center gap-4 bg-pink-50/30 p-4 rounded-3xl animate-in slide-in-from-right-4">
-                <img 
-                  src={item.image} 
-                  onError={handleImageError}
-                  className="w-20 h-20 object-cover rounded-2xl" 
-                  alt={item.name[lang]} 
-                />
-                <div className="flex-grow">
-                  <h4 className="font-bold text-gray-800 text-sm">{item.name[lang]}</h4>
-                  <p className="text-pink-500 font-black">$ {item.price}</p>
-                </div>
-                <button onClick={() => removeFromCart(idx)} className="text-gray-300 hover:text-red-400 transition-colors"><Trash2 size={18} /></button>
-              </div>
-            ))
-          )}
-        </div>
-        {cart.length > 0 && (
-          <div className="p-8 border-t border-pink-50 bg-pink-50/10 space-y-6">
-            <div className="flex justify-between items-end">
-              <span className="text-gray-400 font-bold text-sm uppercase tracking-widest">{t('cart.total')}</span>
-              <span className="text-3xl font-black text-gray-900">$ {calculateTotal()}</span>
-            </div>
-            <button 
-              onClick={checkoutViaMessenger}
-              className="w-full bg-gray-900 text-white py-6 rounded-[2rem] font-black text-lg flex items-center justify-center gap-4 hover:bg-pink-500 transition-all shadow-xl"
+  const LanguageSwitcher = () => (
+    <div className="relative" ref={langDropdownRef}>
+      <button
+        onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+        className="flex items-center gap-2 bg-pink-50 px-4 py-2 rounded-full border border-pink-100 shadow-sm hover:bg-pink-100 transition-colors"
+      >
+        <span className="text-[10px] font-black text-pink-500 uppercase">{lang.toUpperCase()}</span>
+        <ChevronDown size={14} className={`text-pink-300 transition-transform ${isLangDropdownOpen ? 'rotate-180' : ''}`} />
+      </button>
+      {isLangDropdownOpen && (
+        <div className="absolute right-0 mt-2 w-48 bg-white border border-pink-50 rounded-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 z-[100]">
+          {(['fr', 'en', 'zh'] as Locale[]).map((code) => (
+            <button
+              key={code}
+              onClick={() => { setLang(code); setIsLangDropdownOpen(false); }}
+              className={`w-full flex items-center justify-between px-5 py-3 text-sm font-bold transition-colors ${
+                lang === code ? 'bg-pink-50 text-pink-600' : 'text-gray-500 hover:bg-pink-50/50'
+              }`}
             >
-              {t('cart.checkout')} <Copy size={20} />
+              {code === 'fr' ? 'FR - Français' : code === 'en' ? 'EN - English' : 'ZH - 中文'}
+              {lang === code && <Check size={14} />}
             </button>
-          </div>
-        )}
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  const ProductCard: React.FC<{ product: Product; isGrid?: boolean }> = ({ product, isGrid }) => (
+    <div className={`group ${isGrid ? 'bg-white rounded-[3rem] overflow-hidden shadow-sm hover:shadow-soft-pink transition-all border border-pink-50' : ''}`}>
+      <div className={`relative overflow-hidden ${isGrid ? 'aspect-square' : 'aspect-[4/5] rounded-[3rem] bg-pink-50 group-hover:shadow-soft-pink transition-all duration-700'}`}>
+        <img 
+          src={product.image} 
+          onError={handleImageError}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 jewelry-img-warmth" 
+          alt={product.name[lang]} 
+        />
+        {/* 色调混合遮罩层 */}
+        <div className="absolute inset-0 jewelry-overlay pointer-events-none" />
+        {/* 玻璃感装饰描边 */}
+        <div className="absolute inset-0 border-[8px] border-white/10 rounded-[inherit] pointer-events-none group-hover:border-white/20 transition-all duration-700" />
+        
+        <button 
+          onClick={() => addToCart(product)} 
+          className={`absolute bottom-6 right-6 bg-white text-pink-500 p-4 rounded-2xl shadow-2xl transition-all ${isGrid ? '' : 'opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0'}`}
+        >
+          <ShoppingBag size={isGrid ? 20 : 24} />
+        </button>
+      </div>
+      
+      <div className={`mt-6 ${isGrid ? 'p-10 text-center' : 'text-center'}`}>
+        <h4 className={`font-bold text-gray-800 ${isGrid ? 'text-xl mb-2' : 'text-lg'}`}>{product.name[lang]}</h4>
+        {isGrid && <p className="text-gray-400 text-sm mb-8 leading-relaxed h-12 overflow-hidden">{product.description[lang]}</p>}
+        <div className={isGrid ? "flex items-center justify-between pt-6 border-t border-pink-50" : ""}>
+           <p className={`text-pink-500 font-black ${isGrid ? 'text-2xl' : 'text-xl'}`}>${product.price}</p>
+           {isGrid && <span className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Panda J Choice</span>}
+        </div>
       </div>
     </div>
   );
@@ -235,7 +206,48 @@ const App: React.FC = () => {
         </div>
       </div>
 
-      <CartModal />
+      <div className={`fixed inset-0 z-[100] flex justify-end transition-opacity duration-300 ${isCartOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" onClick={() => setIsCartOpen(false)} />
+        <div className={`relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col transition-transform duration-500 ${isCartOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+          <div className="p-8 border-b border-pink-50 flex items-center justify-between">
+            <h3 className="text-2xl font-logo text-gray-900">{t('cart.title')}</h3>
+            <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-pink-50 rounded-full transition-colors"><X size={24} /></button>
+          </div>
+          <div className="flex-grow overflow-y-auto p-8 space-y-6">
+            {cart.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-full text-gray-400 space-y-4">
+                <ShoppingBag size={48} className="opacity-20" />
+                <p className="font-bold">{t('cart.empty')}</p>
+              </div>
+            ) : (
+              cart.map((item, idx) => (
+                <div key={idx} className="flex items-center gap-4 bg-pink-50/30 p-4 rounded-3xl animate-in slide-in-from-right-4">
+                  <div className="relative w-20 h-20 overflow-hidden rounded-2xl">
+                    <img src={item.image} onError={handleImageError} className="w-full h-full object-cover jewelry-img-warmth" alt={item.name[lang]} />
+                    <div className="absolute inset-0 jewelry-overlay" />
+                  </div>
+                  <div className="flex-grow">
+                    <h4 className="font-bold text-gray-800 text-sm">{item.name[lang]}</h4>
+                    <p className="text-pink-500 font-black">$ {item.price}</p>
+                  </div>
+                  <button onClick={() => removeFromCart(idx)} className="text-gray-300 hover:text-red-400 transition-colors"><Trash2 size={18} /></button>
+                </div>
+              ))
+            )}
+          </div>
+          {cart.length > 0 && (
+            <div className="p-8 border-t border-pink-50 bg-pink-50/10 space-y-6">
+              <div className="flex justify-between items-end">
+                <span className="text-gray-400 font-bold text-sm uppercase tracking-widest">{t('cart.total')}</span>
+                <span className="text-3xl font-black text-gray-900">$ {calculateTotal()}</span>
+              </div>
+              <button onClick={checkoutViaMessenger} className="w-full bg-gray-900 text-white py-6 rounded-[2rem] font-black text-lg flex items-center justify-center gap-4 hover:bg-pink-500 transition-all shadow-xl">
+                {t('cart.checkout')} <Copy size={20} />
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
       
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-2xl border-b border-pink-50 shadow-sm transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -252,10 +264,7 @@ const App: React.FC = () => {
             </div>
             <div className="flex items-center space-x-3">
               <div className="hidden sm:block"><LanguageSwitcher /></div>
-              <button 
-                onClick={() => setIsCartOpen(true)}
-                className="relative p-2 text-gray-600 hover:bg-pink-50 rounded-full transition-colors"
-              >
+              <button onClick={() => setIsCartOpen(true)} className="relative p-2 text-gray-600 hover:bg-pink-50 rounded-full transition-colors">
                 <ShoppingBag size={22} />
                 {cart.length > 0 && <span className="absolute top-0 right-0 bg-pink-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">{cart.length}</span>}
               </button>
@@ -274,10 +283,7 @@ const App: React.FC = () => {
         )}
       </nav>
 
-      <button 
-        onClick={() => window.open(MS_LINK, '_blank')}
-        className="fixed bottom-6 left-6 z-50 bg-[#0084FF] text-white p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all flex items-center justify-center group"
-      >
+      <button onClick={() => window.open(MS_LINK, '_blank')} className="fixed bottom-6 left-6 z-50 bg-[#0084FF] text-white p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all flex items-center justify-center group">
         <MessageCircle size={24} />
       </button>
 
@@ -302,18 +308,7 @@ const App: React.FC = () => {
               <div className="text-center mb-16 relative"><h3 className="text-4xl font-black text-gray-900 mb-2">{t('section.popular')}</h3><div className="w-24 h-1 bg-amber-400 mx-auto rounded-full"></div></div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
                 {JEWELRY_PRODUCTS.map(product => (
-                  <div key={product.id} className="group">
-                    <div className="relative aspect-[4/5] overflow-hidden rounded-[3rem] bg-pink-50 group-hover:shadow-soft-pink transition-all duration-700">
-                      <img 
-                        src={product.image} 
-                        onError={handleImageError}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                        alt={product.name[lang]} 
-                      />
-                      <button onClick={() => addToCart(product)} className="absolute bottom-6 right-6 bg-white text-pink-500 p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all"><ShoppingBag size={24} /></button>
-                    </div>
-                    <div className="mt-6 text-center"><h4 className="font-bold text-gray-800 text-lg">{product.name[lang]}</h4><p className="text-pink-500 font-black text-xl">${product.price}</p></div>
-                  </div>
+                  <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             </section>
@@ -325,24 +320,7 @@ const App: React.FC = () => {
             <h2 className="text-5xl font-logo text-gray-900 text-center mb-16">{t('nav.shop')}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
               {JEWELRY_PRODUCTS.map(product => (
-                <div key={product.id} className="bg-white rounded-[3rem] overflow-hidden shadow-sm hover:shadow-soft-pink transition-all border border-pink-50 group">
-                  <div className="overflow-hidden aspect-square">
-                    <img 
-                      src={product.image} 
-                      onError={handleImageError}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                      alt={product.name[lang]} 
-                    />
-                  </div>
-                  <div className="p-10 text-center">
-                    <h4 className="text-xl font-bold text-gray-900 mb-2">{product.name[lang]}</h4>
-                    <p className="text-gray-400 text-sm mb-8 leading-relaxed h-12 overflow-hidden">{product.description[lang]}</p>
-                    <div className="flex items-center justify-between pt-6 border-t border-pink-50">
-                      <span className="text-2xl font-black text-pink-500">${product.price}</span>
-                      <button onClick={() => addToCart(product)} className="bg-gray-900 text-white p-4 rounded-2xl hover:bg-pink-500 transition-all"><ShoppingBag size={20} /></button>
-                    </div>
-                  </div>
-                </div>
+                <ProductCard key={product.id} product={product} isGrid />
               ))}
             </div>
           </div>
@@ -354,12 +332,7 @@ const App: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
               {NAIL_SERVICES.map(service => (
                 <div key={service.id} className="group relative rounded-[3.5rem] bg-white shadow-2xl overflow-hidden aspect-[4/5.5]">
-                  <img 
-                    src={service.image} 
-                    onError={handleImageError}
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
-                    alt={service.name[lang]} 
-                  />
+                  <img src={service.image} onError={handleImageError} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt={service.name[lang]} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-10 text-white">
                     <span className="bg-amber-400 text-[10px] px-4 py-1.5 rounded-full font-black uppercase mb-4 inline-block">{service.duration[lang]}</span>
@@ -397,23 +370,12 @@ const App: React.FC = () => {
           <div className="max-w-4xl mx-auto px-4 py-16 animate-in fade-in duration-500">
             <div className="text-center mb-16 space-y-6"><h2 className="text-5xl font-logo text-gray-900">{t('ai.title')}</h2><p className="text-gray-400 font-medium">{t('ai.desc')}</p></div>
             <div className="bg-white rounded-[4rem] shadow-2xl p-10 md:p-16 border border-pink-50">
-              <textarea 
-                value={aiPrompt} 
-                onChange={(e) => setAiPrompt(e.target.value)} 
-                placeholder={t('ai.placeholder')} 
-                className="w-full p-10 rounded-[3rem] bg-pink-50/30 border-2 border-pink-100 outline-none text-xl min-h-[220px] font-medium focus:bg-white transition-all" 
-              />
-              <button 
-                onClick={askAi} 
-                disabled={isAiLoading || !aiPrompt.trim()} 
-                className="w-full mt-10 bg-gray-900 text-white py-6 rounded-[2.5rem] font-black text-xl shadow-2xl disabled:opacity-50 hover:bg-pink-500 transition-all"
-              >
+              <textarea value={aiPrompt} onChange={(e) => setAiPrompt(e.target.value)} placeholder={t('ai.placeholder')} className="w-full p-10 rounded-[3rem] bg-pink-50/30 border-2 border-pink-100 outline-none text-xl min-h-[220px] font-medium focus:bg-white transition-all" />
+              <button onClick={askAi} disabled={isAiLoading || !aiPrompt.trim()} className="w-full mt-10 bg-gray-900 text-white py-6 rounded-[2.5rem] font-black text-xl shadow-2xl disabled:opacity-50 hover:bg-pink-500 transition-all">
                 {isAiLoading ? 'AI Consultant...' : t('ai.btn')}
               </button>
               {aiResponse && (
-                <div className="mt-16 bg-pink-50/50 p-12 rounded-[3.5rem] border-2 border-pink-100 italic text-lg leading-relaxed text-gray-700 whitespace-pre-wrap font-medium animate-in slide-in-from-bottom-4 duration-500 prose max-w-none">
-                  {aiResponse}
-                </div>
+                <div className="mt-16 bg-pink-50/50 p-12 rounded-[3.5rem] border-2 border-pink-100 italic text-lg leading-relaxed text-gray-700 whitespace-pre-wrap font-medium animate-in slide-in-from-bottom-4 duration-500 prose max-w-none">{aiResponse}</div>
               )}
             </div>
           </div>

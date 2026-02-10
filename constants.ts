@@ -1,13 +1,47 @@
 import { Product, NailService } from './types';
 
 /**
- * 💡 图片显示排查清单（当前状态：已放进 public 文件夹）：
- * 1. 既然已经放在 public/images 下，访问路径应该是 /images/...
- * 2. 文件名后缀：您提到现在是 .jpg.webp，路径已同步更新。
- * 3. 区分大小写：请确保文件名在文件系统中确实是全小写。
+ * 💡 图片显示排查清单：
+ * 1. 确认已将新图片放入 public/images 文件夹。
+ * 2. 确认文件名已修改为：earrings_1.jpg.webp 和 earrings_2.jpg.webp。
+ * 3. 访问路径应为 /images/文件名。
  */
 
 export const JEWELRY_PRODUCTS: Product[] = [
+  {
+    id: 'j4',
+    name: { 
+      zh: '璀璨繁星花簇耳钉', 
+      fr: 'Boucles d\'oreilles Fleur Étincelante', 
+      en: 'Sparkling Flower Cluster Studs' 
+    },
+    price: 39,
+    category: 'earrings',
+    image: '/images/earrings_1.jpg.webp', 
+    description: {
+      zh: '精致的太阳花瓣造型，密镶高品质闪耀锆石，如繁星般点亮耳畔，散发极致法式浪漫。',
+      fr: 'Un design floral raffiné avec des zircons pavés, illuminant votre visage comme des étoiles scintillantes.',
+      en: 'A refined floral design with pavé zircons, lighting up your face like shimmering stars with French romanticism.'
+    },
+    stock: 10
+  },
+  {
+    id: 'j5',
+    name: { 
+      zh: '银河星光环绕耳钉', 
+      fr: 'Clous d\'oreilles Halo Galaxie', 
+      en: 'Galaxy Halo Studs' 
+    },
+    price: 42,
+    category: 'earrings',
+    image: '/images/earrings_2.jpg.webp', 
+    description: {
+      zh: '经典光环设计，中央主石熠熠生辉，全方位展现立体切割的火彩，尽显高贵典雅风范。',
+      fr: 'Un design halo classique avec un zircon central éclatant, capturant la lumière sous tous les angles.',
+      en: 'A classic halo design with a brilliant center stone, capturing light from every angle for timeless elegance.'
+    },
+    stock: 8
+  },
   {
     id: 'j0',
     name: { 
@@ -17,7 +51,6 @@ export const JEWELRY_PRODUCTS: Product[] = [
     },
     price: 48,
     category: 'rings',
-    // 更新为您的实际文件名
     image: '/images/floral_ring.jpg.webp', 
     description: {
       zh: '精致的花卉造型排戒，点缀闪耀马眼形锆石，尽显法式浪漫气质。',
@@ -42,23 +75,6 @@ export const JEWELRY_PRODUCTS: Product[] = [
       en: 'Selected freshwater pearls, perfect for enhancing your natural glow.'
     },
     stock: 5
-  },
-  {
-    id: 'j2',
-    name: { 
-      zh: '鎏金月光石戒指', 
-      fr: 'Bague Pierre de Lune Dorée', 
-      en: 'Gilded Moonstone Ring' 
-    },
-    price: 38,
-    category: 'rings',
-    image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=600',
-    description: {
-      zh: '优雅的镀金工艺，镶嵌闪耀月光石色泽，展现复古气质。',
-      fr: 'Placage à l\'or élégant with des reflets de pierre de lune pour un style vintage.',
-      en: 'Elegant gold plating with moonstone flashes for a timeless vintage style.'
-    },
-    stock: 2
   },
   {
     id: 'j3',
