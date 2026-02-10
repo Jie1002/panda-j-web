@@ -1,4 +1,3 @@
-
 export type Locale = 'zh' | 'fr' | 'en';
 
 export interface MultilingualString {
@@ -12,7 +11,8 @@ export interface Product {
   name: MultilingualString;
   price: number;
   category: 'earrings' | 'rings' | 'necklaces' | 'bracelets';
-  image: string;
+  image: string; // 主图 (用于列表显示)
+  images?: string[]; // 详情页多图库
   description: MultilingualString;
   stock: number;
 }
@@ -35,4 +35,4 @@ export interface BookingState {
   notes?: string;
 }
 
-export type View = 'home' | 'shop' | 'services' | 'booking' | 'about' | 'ai-advisor';
+export type View = 'home' | 'shop' | 'services' | 'booking' | 'about' | 'ai-advisor' | 'product-detail';
