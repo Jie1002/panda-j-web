@@ -27,6 +27,8 @@ import { UI_TRANSLATIONS } from './translations';
 const FB_LINK = "https://www.facebook.com/jie.pan.5667";
 const MS_LINK = "https://m.me/jie.pan.5667";
 
+// 使用 Base64 作为最终兜底图，确保绝对不会触发二次加载错误导致死循环
+const SAFE_PLACEHOLDER = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNmZmVmZjIiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIxMCIgZmlsbD0iI2Y0NzJiYSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5QYW5kYSBKPC90ZXh0Pjwvc3ZnPg==";
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1603561591411-071f4eb28381?auto=format&fit=crop&q=80&w=600";
 
 const App: React.FC = () => {
@@ -62,7 +64,19 @@ const App: React.FC = () => {
   };
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src = FALLBACK_IMAGE;
+    const target = e.currentTarget;
+    // 如果已经是兜底图了还报错，说明网络环境极差或 URL 有误，此时直接停止加载尝试
+    if (target.src === SAFE_PLACEHOLDER) {
+      target.onerror = null; // 彻底断开错误监听
+      return;
+    }
+    // 如果当前不是 Unsplash 且不是 SafePlaceholder，尝试切换到 Unsplash
+    if (target.src !== FALLBACK_IMAGE) {
+      target.src = FALLBACK_IMAGE;
+    } else {
+      // 如果 Unsplash 也挂了，切换到 Base64 安全图
+      target.src = SAFE_PLACEHOLDER;
+    }
   };
 
   const addToCart = (product: Product) => {
@@ -173,9 +187,7 @@ const App: React.FC = () => {
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 jewelry-img-warmth" 
           alt={product.name[lang]} 
         />
-        {/* 色调混合遮罩层 */}
         <div className="absolute inset-0 jewelry-overlay pointer-events-none" />
-        {/* 玻璃感装饰描边 */}
         <div className="absolute inset-0 border-[8px] border-white/10 rounded-[inherit] pointer-events-none group-hover:border-white/20 transition-all duration-700" />
         
         <button 
