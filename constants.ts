@@ -1,12 +1,5 @@
 import { Product, NailService } from './types';
 
-/**
- * 💡 图片路径说明：
- * 如果您的图片放在 public/images/ 目录下，
- * 且服务器将 public 视为根目录，则路径为 /images/...
- * 如果图片不显示，请尝试修改为 /public/images/...
- */
-
 export const JEWELRY_PRODUCTS: Product[] = [
   {
     id: 'j4',
@@ -18,6 +11,11 @@ export const JEWELRY_PRODUCTS: Product[] = [
     price: 39,
     category: 'earrings',
     image: '/images/earrings_1.jpg.webp', 
+    images: [
+      '/images/earrings_1.jpg.webp',
+      'https://images.unsplash.com/photo-1630019051930-474049ed4e0c?auto=format&fit=crop&q=80&w=800',
+      'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&q=80&w=800'
+    ],
     description: {
       zh: '精致的太阳花瓣造型，密镶高品质闪耀锆石，如繁星般点亮耳畔，散发极致法式浪漫。',
       fr: 'Un design floral raffiné avec des zircons pavés, illuminant votre visage comme des étoiles scintillantes.',
@@ -35,6 +33,10 @@ export const JEWELRY_PRODUCTS: Product[] = [
     price: 42,
     category: 'earrings',
     image: '/images/earrings_2.jpg.webp', 
+    images: [
+      '/images/earrings_2.jpg.webp',
+      'https://images.unsplash.com/photo-1635767798638-3e25273a8236?auto=format&fit=crop&q=80&w=800'
+    ],
     description: {
       zh: '经典光环设计，中央主石熠熠生辉，全方位展现立体切割的火彩，尽显高贵典雅风范。',
       fr: 'Un design halo classique avec un zircon central éclatant, capturant la lumière sous tous les angles.',
@@ -52,6 +54,10 @@ export const JEWELRY_PRODUCTS: Product[] = [
     price: 48,
     category: 'rings',
     image: '/images/floral_ring.jpg.webp', 
+    images: [
+      '/images/floral_ring.jpg.webp',
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=800'
+    ],
     description: {
       zh: '精致的花卉造型排戒，点缀闪耀马眼形锆石，尽显法式浪漫气质。',
       fr: 'Une bague tressée de fleurs délicates, ornée de zircons marquise pour une élégance romantique.',
@@ -70,7 +76,7 @@ export const JEWELRY_PRODUCTS: Product[] = [
     category: 'earrings',
     image: 'https://images.unsplash.com/photo-1535633302704-b02f4fbc8537?auto=format&fit=crop&q=80&w=600',
     description: {
-      zh: '精选淡水珍珠质感，完美修饰脸型，散发温润光泽。',
+      zh: '精选淡水珍珠质感，完美修饰脸型，散发温润光泽。珍珠的自然光泽配以极简几何设计，是通勤与晚宴的不二之选。',
       fr: 'Perles d\'eau douce sélectionnées, parfaites pour illuminer votre visage.',
       en: 'Selected freshwater pearls, perfect for enhancing your natural glow.'
     },
